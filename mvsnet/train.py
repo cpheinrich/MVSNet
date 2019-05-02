@@ -30,7 +30,7 @@ sys.path.append("../")
 
 
 # params for datasets
-tf.app.flags.DEFINE_string('train_data_root', '../mvs-training-7scenes',
+tf.app.flags.DEFINE_string('train_data_root', '../../data/7scenes/train/',
                            """Path to dtu dataset.""")
 tf.app.flags.DEFINE_string('log_dir', '../logs',
                            """Path to store the log.""")
@@ -40,11 +40,11 @@ tf.app.flags.DEFINE_boolean('train_dtu', True,
                             """Whether to train.""")
 tf.app.flags.DEFINE_boolean('use_pretrain', True,
                             """Whether to train.""")
-tf.app.flags.DEFINE_integer('ckpt_step', 100000,
+tf.app.flags.DEFINE_integer('ckpt_step', 850000,
                             """ckpt step.""")
 
 # input parameters
-tf.app.flags.DEFINE_integer('view_num', 5,
+tf.app.flags.DEFINE_integer('view_num', 4,
                             """Number of images (1 ref image and view_num - 1 view images).""")
 tf.app.flags.DEFINE_integer('max_d', 200,
                             """Maximum depth step when training.""")
@@ -65,30 +65,30 @@ tf.app.flags.DEFINE_boolean('refinement', False,
                             """Whether to apply depth map refinement for 3DCNNs""")
 
 # training parameters
-tf.app.flags.DEFINE_integer('num_gpus', 1,
+tf.app.flags.DEFINE_integer('num_gpus', 2,
                             """Number of GPUs.""")
 tf.app.flags.DEFINE_integer('batch_size', 1,
                             """Training batch size.""")
-tf.app.flags.DEFINE_integer('epoch', 6,
+tf.app.flags.DEFINE_integer('epoch', 40,
                             """Training epoch number.""")
 tf.app.flags.DEFINE_float('val_ratio', 0,
                           """Ratio of validation set when splitting dataset.""")
                           ## TODO: decrease base_lr back to 0.001
-tf.app.flags.DEFINE_float('base_lr', 0.0001,
+tf.app.flags.DEFINE_float('base_lr', 0.002,
                           """Base learning rate.""")
 tf.app.flags.DEFINE_integer('display', 1,
                             """Interval of loginfo display.""")
-tf.app.flags.DEFINE_integer('stepvalue', 10000,
+tf.app.flags.DEFINE_integer('stepvalue', 50000,
                             """Step interval to decay learning rate.""")
-tf.app.flags.DEFINE_integer('snapshot', 2000,
+tf.app.flags.DEFINE_integer('snapshot', 5000,
                             """Step interval to save the model.""")
 tf.app.flags.DEFINE_float('gamma', 0.9,
                           """Learning rate decay rate.""")
 tf.app.flags.DEFINE_boolean('external_data_gen', True,
                             """Whether or not to use the new external data gen""")
-tf.app.flags.DEFINE_float('val_batch_size', 10,
+tf.app.flags.DEFINE_float('val_batch_size', 20,
                           """Number of images to run validation on when validation.""")
-tf.app.flags.DEFINE_float('train_steps_per_val', 100,
+tf.app.flags.DEFINE_float('train_steps_per_val', 300,
                           """Number of samples to train on before running a round of validation.""")
 
 
