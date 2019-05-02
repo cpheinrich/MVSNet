@@ -65,7 +65,7 @@ tf.app.flags.DEFINE_boolean('refinement', False,
                             """Whether to apply depth map refinement for 3DCNNs""")
 
 # training parameters
-tf.app.flags.DEFINE_integer('num_gpus', 2,
+tf.app.flags.DEFINE_integer('num_gpus', 1,
                             """Number of GPUs.""")
 tf.app.flags.DEFINE_integer('batch_size', 1,
                             """Training batch size.""")
@@ -228,7 +228,7 @@ def train(training_list=None, validation_list=None):
         training_set = tf.data.Dataset.from_generator(
             lambda: training_generator, generator_data_type)
         training_set = training_set.batch(FLAGS.batch_size)
-        training_set = training_set.prefetch(buffer_size=2)
+        training_set = training_set.prefetch(buffer_size=1)
         # iterators
         training_iterator = training_set.make_initializable_iterator()
 
@@ -236,7 +236,7 @@ def train(training_list=None, validation_list=None):
         validation_set = tf.data.Dataset.from_generator(
             lambda: validation_generator, generator_data_type)
         validation_set = validation_set.batch(FLAGS.batch_size)
-        validation_set = validation_set.prefetch(buffer_size=2)
+        validation_set = validation_set.prefetch(buffer_size=1)
         # iterators
         validation_iterator = validation_set.make_initializable_iterator()
 
