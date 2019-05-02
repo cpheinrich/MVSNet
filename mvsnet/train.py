@@ -30,7 +30,7 @@ sys.path.append("../")
 
 
 # params for datasets
-tf.app.flags.DEFINE_string('train_data_root', '../mvs-training-7scenes',
+tf.app.flags.DEFINE_string('train_data_root', '../mvs_training',
                            """Path to dtu dataset.""")
 tf.app.flags.DEFINE_string('log_dir', '../logs',
                            """Path to store the log.""")
@@ -38,19 +38,19 @@ tf.app.flags.DEFINE_string('model_dir', '../model',
                            """Path to save the model.""")
 tf.app.flags.DEFINE_boolean('train_dtu', True,
                             """Whether to train.""")
-tf.app.flags.DEFINE_boolean('use_pretrain', True,
+tf.app.flags.DEFINE_boolean('use_pretrain', False,
                             """Whether to train.""")
 tf.app.flags.DEFINE_integer('ckpt_step', 100000,
                             """ckpt step.""")
 
 # input parameters
-tf.app.flags.DEFINE_integer('view_num', 5,
+tf.app.flags.DEFINE_integer('view_num', 3,
                             """Number of images (1 ref image and view_num - 1 view images).""")
-tf.app.flags.DEFINE_integer('max_d', 200,
+tf.app.flags.DEFINE_integer('max_d', 192,
                             """Maximum depth step when training.""")
 tf.app.flags.DEFINE_integer('max_w', 640,
                             """Maximum image width when training.""")
-tf.app.flags.DEFINE_integer('max_h', 480,
+tf.app.flags.DEFINE_integer('max_h', 512,
                             """Maximum image height when training.""")
 tf.app.flags.DEFINE_float('sample_scale', 0.25,
                           """Downsample scale for building cost volume.""")
@@ -69,12 +69,11 @@ tf.app.flags.DEFINE_integer('num_gpus', 1,
                             """Number of GPUs.""")
 tf.app.flags.DEFINE_integer('batch_size', 1,
                             """Training batch size.""")
-tf.app.flags.DEFINE_integer('epoch', 6,
+tf.app.flags.DEFINE_integer('epoch', 4,
                             """Training epoch number.""")
 tf.app.flags.DEFINE_float('val_ratio', 0,
                           """Ratio of validation set when splitting dataset.""")
-                          ## TODO: decrease base_lr back to 0.001
-tf.app.flags.DEFINE_float('base_lr', 0.0001,
+tf.app.flags.DEFINE_float('base_lr', 0.001,
                           """Base learning rate.""")
 tf.app.flags.DEFINE_integer('display', 1,
                             """Interval of loginfo display.""")
@@ -84,7 +83,7 @@ tf.app.flags.DEFINE_integer('snapshot', 2000,
                             """Step interval to save the model.""")
 tf.app.flags.DEFINE_float('gamma', 0.9,
                           """Learning rate decay rate.""")
-tf.app.flags.DEFINE_boolean('external_data_gen', True,
+tf.app.flags.DEFINE_boolean('external_data_gen', False,
                             """Whether or not to use the new external data gen""")
 tf.app.flags.DEFINE_float('val_batch_size', 10,
                           """Number of images to run validation on when validation.""")
@@ -229,7 +228,7 @@ def train(training_list=None, validation_list=None):
         training_set = tf.data.Dataset.from_generator(
             lambda: training_generator, generator_data_type)
         training_set = training_set.batch(FLAGS.batch_size)
-        training_set = training_set.prefetch(buffer_size=1)
+        training_set = training_set.prefetch(buffer_size=2)
         # iterators
         training_iterator = training_set.make_initializable_iterator()
 
@@ -237,7 +236,7 @@ def train(training_list=None, validation_list=None):
         validation_set = tf.data.Dataset.from_generator(
             lambda: validation_generator, generator_data_type)
         validation_set = validation_set.batch(FLAGS.batch_size)
-        validation_set = validation_set.prefetch(buffer_size=1)
+        validation_set = validation_set.prefetch(buffer_size=2)
         # iterators
         validation_iterator = validation_set.make_initializable_iterator()
 
