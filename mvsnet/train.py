@@ -30,7 +30,7 @@ sys.path.append("../")
 
 
 # params for datasets
-tf.app.flags.DEFINE_string('train_data_root', '../mvs_training',
+tf.app.flags.DEFINE_string('train_data_root', '../mvs_training/dtu',
                            """Path to dtu dataset.""")
 tf.app.flags.DEFINE_string('log_dir', '../logs',
                            """Path to store the log.""")
